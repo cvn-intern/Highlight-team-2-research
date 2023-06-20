@@ -4,13 +4,14 @@ const bodyParser = require('body-parser');
 const serveStatic = require('serve-static');
 const sqlite3 = require('sqlite3').verbose();
 const { Sequelize, DataTypes } = require("sequelize")
+const { check, validationResult } = require('express-validator');
 
 const main = async () => {
 
     const app = express();
-    app.use(serveStatic(__dirname+ '/public', {'index': ['index.html']}));
-    app.use(bodyParser.urlencoded({extended: true}));
-    
+    app.use(serveStatic(__dirname + '/public', { 'index': ['index.html'] }));
+    app.use(bodyParser.urlencoded({ extended: true }));
+
     // const db = new sqlite3.Database(':memory:');
     // db.serialize(function() {
     //   db.run("CREATE TABLE user (username TEXT, password TEXT, name TEXT)");
@@ -20,9 +21,9 @@ const main = async () => {
     //orm config
     const sequelize = new Sequelize('sqlite::memory:', {
         define: {
-          freezeTableName: true
+            freezeTableName: true
         }
-      });
+    });
     const User = sequelize.define('user', {
         username: DataTypes.TEXT,
         password: DataTypes.TEXT,
@@ -36,19 +37,31 @@ const main = async () => {
         password: 'admin123',
         name: 'App Administrator',
     })
-   
-    app.post('/login', async function (req, res) {
+
+    var loginValidate = [
+        // Check Username
+        // check('username', 'Username Must Be an Email Address').isEmail()
+        // .trim().escape().normalizeEmail(),
+        // Check Password
+        check('password').isLength({ min: 8 }).withMessage('Password Must Be at Least 8 Characters').trim().escape()];
+
+    app.post('/login', loginValidate, function (req, res) {
         const username = req.body.username; // a valid username is admin
         const password = req.body.password; // a valid password is admin123 unknown' or '1'='1
-        const query = "SELECT name FROM user where username = '" + username + "' and password = '" + password + "'";
-    
-        console.log("username: " + username);
-        console.log("password: " + password);
-        console.log('query: ' + query);
+
+        const validateErr = validationResult(req)
+        if(!validateErr.isEmpty()) return res.send(validateErr)
+
+        /* concat string */
+        // const query = "SELECT name FROM user where username = '" + username + "' and password = '" + password + "'";
+
+        // console.log("username: " + username);
+        // console.log("password: " + password);
+        // console.log('query: ' + query);
         
         // db.get(query , function(err, value) {
         //     console.log({value})
-            
+
         //     if(err) {
         //         console.log('ERROR', err);
         //         res.redirect("/index.html#error");
@@ -69,19 +82,15 @@ const main = async () => {
         // });
 
         /* orm */
-        User.findOne({where: {
-            username,
-            password
-        }, attributes: ['name']}).then(value => res.send({value})).catch(err => res.send({msg: "Invalid credentials"})) 
-
-    
+        User.findOne({
+            where: {
+                username,
+                password
+            }, attributes: ['name']
+        }).then(value => res.send({ value })).catch(err => res.send({ msg: "Invalid credentials" }))
     });
 
-    // sanitizing
-    
-
-app.listen(3000, function() { console.log('listening'); });
-    
+    app.listen(3000, function () { console.log('listening'); });
 }
 
 main()
