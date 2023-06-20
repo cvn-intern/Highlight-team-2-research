@@ -44,18 +44,28 @@
             } else {
                 res.send({row});
             }
-        });
+        });   
+    });
 
-        /* parameters */
-        // const queryPrepare = db.prepare("SELECT name FROM user where username = (?) and password = (?)");
-        // queryPrepare.each(username, password, function(err, row) {
-        //     res.send({row})
-        // }, function(err, count) {
-        //     res.send({msg: "Invalid credentials"})
-        //     queryPrepare.finalize();
-        // });
-      
+
+
+    // parameters
+    app.post('/login',loginValidate , function (req, res) {
+        const username = req.body.username; // a valid username is admin
+        const password = req.body.password; // a valid password is admin123 unknown' or '1'='1
+        const query = "SELECT name FROM user where username = '" + username + "' and password = '" + password + "'";
     
+        console.log("username: " + username);
+        console.log("password: " + password);
+        console.log('query: ' + query);
+
+        const queryPrepare = db.prepare("SELECT name FROM user where username = (?) and password = (?)");
+        queryPrepare.each(username, password, function(err, row) {
+            res.send({row})
+        }, function(err, count) {
+            res.send({msg: "Invalid credentials"})
+            queryPrepare.finalize();
+        });
     });
 
     
