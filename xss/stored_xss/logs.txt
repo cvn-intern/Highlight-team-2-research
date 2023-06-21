@@ -1,1 +1,0 @@
-PHPSESSID=a5umkte0v3j7onjavqj1qo4al7; very_secret_cookie_that_should_not_be_shown=secret

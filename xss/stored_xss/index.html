@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To do list</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .input_container {
+        display: flex;
+        gap: 4px;
+        height: 60px;
+        align-items: stretch;
+      }
+      .task_input {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid gray;
+        outline: none;
+        width: 600px;
+        padding: 20px;
+        border-radius: 4px;
+      }
+      .task_btn {
+        background: gray;
+        padding: 0 20px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .tasks_list {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .task_container {
+        padding: 4px 20px;
+        background: lightgray;
+        display: flex;
+        align-items: center;
+        border-radius: 4px;
+        max-width: 900px;
+      }
+      .task_content {
+        width: 800px;
+      }
+      .task_functions {
+        display: flex;
+        gap: 4px;
+      }
+      .task_update_btn {
+        padding: 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        background-color: transparent;
+      }
+      .task_delete_btn {
+        padding: 8px;
+        background: red;
+        border: 1px solid gray;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body style="padding: 20px">
+    <div class="input_container">
+      <input
+        type="text"
+        id="task_input"
+        class="task_input"
+        placeholder="Please enter the task name"
+      />
+      <button id="submit_btn" class="task_btn">Save task</button>
+    </div>
+    <h1 style="margin: 40px 0">Tasks list</h1>
+    <div id="tasks_list">
+      <ul class="tasks_list">
+        <li class="task_container">
+          <p class="task_content">Just a task content</p>
+          <div class="task_functions">
+            <button class="task_update_btn">Update</button>
+            <button class="task_delete_btn">Delete</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>
