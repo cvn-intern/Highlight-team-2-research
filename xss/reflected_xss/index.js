@@ -5,14 +5,19 @@ const bodyParser = require('body-parser')
 const port = 3001
 
 app.use(express.static('public'))
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({
+    extended: true
+}))
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'))
 })
 
 app.post('/post', (req, res, next) => {
-    const { username, password } = req.body
+    const {
+        username,
+        password
+    } = req.body
     if (username != '' && password != '') {
         const cookie = `${username}-cookie`
         res.cookie('cookie', cookie).redirect(`/home`)
@@ -24,11 +29,9 @@ app.get('/home', (req, res) => {
 })
 
 app.get('/search', (req, res) => {
-    // // defend
-    // req.query.query = req.query.query.replaceAll('<script>', '')
-    // req.query.query = req.query.query.replaceAll('</script>', '')
-    // req.query.query = req.query.query.replaceAll('script', '')
-
+    // method 1: thêm content-security 
+    // <meta http-equiv="Content-Security-Policy" 
+    //   content="script-src 'self' https://apis.google.com">
     res.send(`
     <!DOCTYPE html>
     <html lang="en">
@@ -40,13 +43,17 @@ app.get('/search', (req, res) => {
     </head>
 
     <body>
-        <div>Result: Crepe sầu riêng miễn phí ${req.query.query}</div>
+        <div id="result">Result: ${req.query.query}</div>
         <div>
             <img src="https://cdn.tgdd.vn/Files/2020/05/07/1254024/cach-lam-banh-crepe-la-dua-nhan-kem-sau-rieng-thom-5.jpg" alt=""/>
         </div>
-    </body>
-
-    </html>`)
+        </body>
+        
+        </html>`)
+    // method 2: thay thế format string = textContent
+    // <script>
+    //     document.getElementById('result').textContent = 'Result: ${req.query.query}'
+    // </script>
 })
 
 app.get('/hack', (req, res) => {
