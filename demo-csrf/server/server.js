@@ -17,7 +17,7 @@ const app = express();
 const IS_PROD = process.env.NODE_ENV !== 'development';
 console.log(IS_PROD);
 console.log('Starting for production:', IS_PROD);
-
+ 
 app.use(express.static(BUILD_PATH));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -29,52 +29,37 @@ app.get('/login', (req, res) => {
 
 
 
-  ///////////////////-----------CSRF PREVENTION---------------////////////////////////////////
-// app.get('/user', (req, res) => {
-//   const { session } = req.cookies;
-//   const token = jwt.sign({ session: session }, JWT_SECRET_KEY, {expiresIn: "59m"})
-//   const user = db.getUser(session);
-//   if (!user) {
-//     res.status(200).json(null);
-//   } else {
-//     res.status(200).json({user, token});
-//   }
-// });
-///////////////////-------------------END------------------////////////////////////////////
-
-
-
-///////////////////-----------CSRF PREVENTION---------------////////////////////////////////
+  ///////////////////-----------PREVENTION---------------////////////////////////////////
 app.get('/user', (req, res) => {
   const { session } = req.cookies;
+  const token = jwt.sign({ session: session }, JWT_SECRET_KEY, {expiresIn: "59m"})
   const user = db.getUser(session);
   if (!user) {
     res.status(200).json(null);
   } else {
-    res.status(200).json(user);
+    res.status(200).json({user, token});
   }
 });
+///////////////////-------------------END------------------////////////////////////////////
+
+
+
+///////////////////-----------CSRF---------------////////////////////////////////
+// app.get('/user', (req, res) => {
+//   const { session } = req.cookies;
+//   const user = db.getUser(session);
+//   if (!user) {
+//     res.status(200).json(null);
+//   } else {
+//     res.status(200).json(user);
+//   }
+// });
+///////////////////-------------------END------------------////////////////////////////////
 
 app.get('*', (req, res) => {
   res.redirect('/');
 });
-///////////////////-------------------END------------------////////////////////////////////
 
-// Login route
-// app.post('/login', (req, res) => {
-//   const { username, password } = req.body;
-//   if (username == null || password == null || username.length < 1 || password.length < 1) {
-//     return res.status(400).end();
-//   }
-//   const sessionID = db.handleLogin(username, password);
-//   res
-//     .cookie('session', sessionID, {
-//       maxAge: ONE_HOUR_MS,
-//       sameSite: 'None',
-//       secure: IS_PROD,
-//     })
-//     .redirect('/');
-// });
 
 
 app.post('/login', (req, res) => {

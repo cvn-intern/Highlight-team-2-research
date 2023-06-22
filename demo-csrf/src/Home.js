@@ -33,37 +33,12 @@ export default function Home({ user, setUser }) {
     }
 
      ///////////////////-----------CSRF PREVENTION---------------////////////////////////////////
-    // const token = localStorage.getItem('token');
-    // fetch('/transfer', {
-    //   method: 'post',
-    //   headers: {
-    //     'Authorization': `Bearer ${token}`
-    //   },
-    //   body: data,
-    // })
-    //   .then(response => response.json())
-    //   .then(response => {
-    //     if (response.success) {
-    //       const updatedUser = response.user;
-    //       setUser(updatedUser);
-    //       setShowTransferModal(false);
-    //     } else {
-    //       setTransferError(response.error);
-    //     }
-
-    //     setTransferModalLoading(false);
-    //   })
-    //   .catch(e => {
-    //     setTransferError('An unknown error occurred.');
-    //     setTransferModalLoading(false);
-    //   });
-    ///////////////////-------------------END------------------////////////////////////////////
-
-
-
-     ///////////////////-----------NON CSRF PREVENTION---------------////////////////////////////////
-     fetch('/transfer', {
+    const token = localStorage.getItem('token');
+    fetch('/transfer', {
       method: 'post',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
       body: data,
     })
       .then(response => response.json())
@@ -82,6 +57,31 @@ export default function Home({ user, setUser }) {
         setTransferError('An unknown error occurred.');
         setTransferModalLoading(false);
       });
+    ///////////////////-------------------END------------------////////////////////////////////
+
+
+
+     ///////////////////---------------CSRF-----------------////////////////////////////////
+    //  fetch('/transfer', {
+    //   method: 'post',
+    //   body: data,
+    // })
+    //   .then(response => response.json())
+    //   .then(response => {
+    //     if (response.success) {
+    //       const updatedUser = response.user;
+    //       setUser(updatedUser);
+    //       setShowTransferModal(false);
+    //     } else {
+    //       setTransferError(response.error);
+    //     }
+
+    //     setTransferModalLoading(false);
+    //   })
+    //   .catch(e => {
+    //     setTransferError('An unknown error occurred.');
+    //     setTransferModalLoading(false);
+    //   });
       ///////////////////-------------------END------------------////////////////////////////////
   };
 

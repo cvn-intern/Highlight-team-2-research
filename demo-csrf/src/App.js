@@ -15,40 +15,40 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  ///////////////////-----------CSRF PREVENTION---------------////////////////////////////////
-  // const refreshUser = useCallback(() => {
-  //   return fetch('/user')
-  //     .then(response => response.json())
-  //     .then(user => {
-  //       setLoading(false);
-  //       if(user){
-  //         setUser(user.user);
-  //         localStorage.setItem('token', user.token);
-  //       }
-        
-  //       if (!user) {
-  //         navigate('/login');
-  //       }
-  //     });
-  // }, [navigate, setUser, setLoading]);
-  ///////////////////-------------------END------------------////////////////////////////////
-
-  
-
-
-   ///////////////////-----------NON CSRF PREVENTION---------------////////////////////////////////
+  ///////////////////-----------PREVENTION---------------////////////////////////////////
   const refreshUser = useCallback(() => {
     return fetch('/user')
       .then(response => response.json())
       .then(user => {
         setLoading(false);
-        setUser(user);
-
+        if(user){
+          setUser(user.user);
+          localStorage.setItem('token', user.token);
+        }
+        
         if (!user) {
           navigate('/login');
         }
       });
   }, [navigate, setUser, setLoading]);
+  ///////////////////-------------------END------------------////////////////////////////////
+
+  
+
+
+   ///////////////////-----------CSRF---------------////////////////////////////////
+  // const refreshUser = useCallback(() => {
+  //   return fetch('/user')
+  //     .then(response => response.json())
+  //     .then(user => {
+  //       setLoading(false);
+  //       setUser(user);  
+
+  //       if (!user) {
+  //         navigate('/login');
+  //       }
+  //     });
+  // }, [navigate, setUser, setLoading]);
   ///////////////////-------------------END------------------////////////////////////////////
 
 
