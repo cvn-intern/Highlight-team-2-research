@@ -16,15 +16,9 @@ function getTasksFromLocalStorage() {
     ? JSON.parse(localStorage.getItem("tasks"))
     : [];
 }
-function deleteTask(index) {
-  let tasks = getTasksFromLocalStorage();
-  tasks.splice(index, 1);
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-function updateTask(index) {}
 function renderTasks() {
   const tasks = getTasksFromLocalStorage();
-  console.log(tasks);
+  // console.log(tasks);
   let content = '<ul class="tasks_list">';
   tasks.forEach((task, id) => {
     let name = task.name;
@@ -52,9 +46,7 @@ function renderTasks() {
   content += "</ul>";
   tasksList.innerHTML = content;
 }
-// Main
-renderTasks();
-submitBtn.addEventListener("click", function () {
+function addTask() {
   // Get tasks from local storage
   let tasks = getTasksFromLocalStorage();
   // Update tasks
@@ -64,7 +56,47 @@ submitBtn.addEventListener("click", function () {
   localStorage.setItem("tasks", JSON.stringify(tasks));
   renderTasks();
   // Reset states
-});
+  taskInput.value = '';
+}
+function updateTaskFromInput(index) {
+  // Get tasks from local storage
+  let tasks = getTasksFromLocalStorage();
+  // Update tasks
+  let name = taskInput.value;
+  tasks[index] = {name};
+  console.log(tasks);
+  // Set tasks
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  renderTasks();
+  // Reset states
+  taskInput.value = '';
+  submitBtn.addEventListener("click", addTask);
+}
+function deleteTask(index) {
+  let tasks = getTasksFromLocalStorage();
+  tasks.splice(index, 1);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  renderTasks();
+}
+function updateTask(index) {
+  const tasks = getTasksFromLocalStorage();
+  const name = tasks[index].name;
+  taskInput.value = name;
+  submitBtn.removeEventListener("click", addTask);
+  submitBtn.addEventListener("click", function handleUpdate(){
+    updateTaskFromInput(index);
+    // Use once
+    this.removeEventListener("click", handleUpdate);
+  });
+}
+// Main
+renderTasks();
+taskInput.addEventListener('keypress', function (e) {
+  if(e.key === "Enter"){
+    submitBtn.click();
+  }
+})
+submitBtn.addEventListener("click", addTask);
 
 // Cách fix:
 // var userInput = '<script>alert("XSS");</script>';
