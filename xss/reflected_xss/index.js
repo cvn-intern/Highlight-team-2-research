@@ -3,6 +3,11 @@ const app = express()
 const path = require('path')
 const bodyParser = require('body-parser')
 const port = 3001
+const createDOMPurify = require('dompurify')
+const { JSDOM } = require('jsdom')
+
+const window = new JSDOM('').window;
+const DOMPurify = createDOMPurify(window);
 
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({
@@ -32,6 +37,12 @@ app.get('/search', (req, res) => {
     // method 1: thêm content-security 
     // <meta http-equiv="Content-Security-Policy" 
     //   content="script-src 'self' https://apis.google.com">
+
+    const query = req.query.query
+
+    // method 2: sanizting data
+    // const clean = DOMPurify.sanitize(query)
+
     res.send(`
     <!DOCTYPE html>
     <html lang="en">
@@ -43,7 +54,7 @@ app.get('/search', (req, res) => {
     </head>
 
     <body>
-        <div id="result">Result: ${req.query.query}</div>
+        <div id="result">Result: ${query}</div>
         <div>
             <img src="https://cdn.tgdd.vn/Files/2020/05/07/1254024/cach-lam-banh-crepe-la-dua-nhan-kem-sau-rieng-thom-5.jpg" alt=""/>
         </div>
