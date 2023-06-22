@@ -61,7 +61,7 @@ export default function Home({ user, setUser }) {
 
 
 
-     ///////////////////-----------NON CSRF PREVENTION---------------////////////////////////////////
+     ///////////////////-----------CSRF---------------////////////////////////////////
      fetch('/transfer', {
       method: 'post',
       body: data,

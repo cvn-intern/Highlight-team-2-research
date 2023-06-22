@@ -36,7 +36,7 @@
 
 
    
-  ///////////////////-----------NON CSRF PREVENTION---------------////////////////////////////////
+  ///////////////////-----------CSRF---------------////////////////////////////////
 const authenticateToken = (req, res, next) => {
     const { session } = req.cookies;
     const user = db.getUser(session);

@@ -19,29 +19,29 @@ const main = async () => {
     });
 
     // orm config
-    // const sequelize = new Sequelize('sqlite::memory:', {
-    //     define: {
-    //         freezeTableName: true
-    //     }
-    // });
-    // const User = sequelize.define('user', {
-    //     username: DataTypes.TEXT,
-    //     password: DataTypes.TEXT,
-    //     name: DataTypes.TEXT,
-    // });
+    const sequelize = new Sequelize('sqlite::memory:', {
+        define: {
+            freezeTableName: true
+        }
+    });
+    const User = sequelize.define('user', {
+        username: DataTypes.TEXT,
+        password: DataTypes.TEXT,
+        name: DataTypes.TEXT,
+    });
 
-    // await User.sync()
+    await User.sync()
 
-    // await User.create({
-    //     username: 'admin',
-    //     password: 'admin123',
-    //     name: 'App Administrator',
-    // })
+    await User.create({
+        username: 'admin',
+        password: 'admin123',
+        name: 'App Administrator',
+    })
 
     var loginValidate = [
         // check('username', 'Username Must Be an Email Address').isEmail().trim().escape().normalizeEmail(),
         // check('username').trim().escape(),
-        // check('password').isLength({ min: 8 }).withMessage('Password Must Be at Least 8 Characters').trim().escape()
+        check('password').isLength({ min: 8 }).withMessage('Password Must Be at Least 8 Characters').trim().escape()
     ];
 
     // a valid username is admin
@@ -56,20 +56,20 @@ const main = async () => {
         if(!validateErr.isEmpty()) return res.send(validateErr)
 
         /* concat string */
-        const queryPrepare = "SELECT name FROM user where username = '" + username + "' and password = '" + password + "'";
+        // const queryPrepare = "SELECT name FROM user where username = '" + username + "' and password = '" + password + "'";
         
-        db.get(queryPrepare , function(err, value) {
-            console.log({value})
+        // db.get(queryPrepare , function(err, value) {
+        //     console.log({value})
 
-            if(err) {
-                console.log('ERROR', err);
-                res.send({msg: "Error"})
-            } else if (!value) {
-                res.send({msg: "Invalid credentials"})
-            } else {
-                res.send({value});
-            }
-        });
+        //     if(err) {
+        //         console.log('ERROR', err);
+        //         res.send({msg: "Error"})
+        //     } else if (!value) {
+        //         res.send({msg: "Invalid credentials"})
+        //     } else {
+        //         res.send({value});
+        //     }
+        // });
 
         /* parameters */
         // const queryPrepare = db.prepare("SELECT name FROM user where username = (?) and password = (?)");
@@ -82,17 +82,17 @@ const main = async () => {
 
         console.log("username: " + username);
         console.log("password: " + password);
-        console.log('query: ' + queryPrepare);
+        // console.log('query: ' + queryPrepare);
 
         /* orm */
-        // User.findOne({
-        //     where: {
-        //         username,
-        //         password
-        //     }, attributes: ['name']
-        // }).then(value => {
-        //     if(!value) return  res.send({ msg: "Invalid credentials" })
-        //     res.send({ value })}).catch(err => res.send({ msg: "Invalid credentials" }))
+        User.findOne({
+            where: {
+                username,
+                password
+            }, attributes: ['name']
+        }).then(value => {
+            if(!value) return  res.send({ msg: "Invalid credentials" })
+            res.send({ value })}).catch(err => res.send({ msg: "Invalid credentials" }))
 
         
     });

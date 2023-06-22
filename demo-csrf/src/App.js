@@ -36,7 +36,7 @@ function App() {
   
 
 
-   ///////////////////-----------NON CSRF PREVENTION---------------////////////////////////////////
+   ///////////////////-----------CSRF---------------////////////////////////////////
   const refreshUser = useCallback(() => {
     return fetch('/user')
       .then(response => response.json())

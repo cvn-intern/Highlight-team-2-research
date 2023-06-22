@@ -44,7 +44,7 @@ app.get('/login', (req, res) => {
 
 
 
-///////////////////-----------CSRF PREVENTION---------------////////////////////////////////
+///////////////////--------------CSRF-------------------////////////////////////////////
 app.get('/user', (req, res) => {
   const { session } = req.cookies;
   const user = db.getUser(session);
@@ -54,11 +54,11 @@ app.get('/user', (req, res) => {
     res.status(200).json(user);
   }
 });
+///////////////////-------------------END------------------////////////////////////////////
 
 app.get('*', (req, res) => {
   res.redirect('/');
 });
-///////////////////-------------------END------------------////////////////////////////////
 
 // Login route
 // app.post('/login', (req, res) => {
@@ -84,6 +84,7 @@ app.post('/login', (req, res) => {
     return res.status(400).end();
   }
   const sessionID = db.handleLogin(username, password);
+  console.log(sessionID)
   //create jwt token
   // const token = jwt.sign({ sessionID: sessionID }, JWT_SECRET_KEY, {expiresIn: "59m"})
   res.cookie('session', sessionID, {
