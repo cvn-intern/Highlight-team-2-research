@@ -17,7 +17,6 @@ export default function Home({ user, setUser }) {
     return null;
   }
 
-  console.log(user);
 
   const submitForm = e => {
     e.preventDefault();
@@ -33,7 +32,37 @@ export default function Home({ user, setUser }) {
       data.append(pair[0], pair[1]);
     }
 
-    fetch('/transfer', {
+     ///////////////////-----------CSRF PREVENTION---------------////////////////////////////////
+    // const token = localStorage.getItem('token');
+    // fetch('/transfer', {
+    //   method: 'post',
+    //   headers: {
+    //     'Authorization': `Bearer ${token}`
+    //   },
+    //   body: data,
+    // })
+    //   .then(response => response.json())
+    //   .then(response => {
+    //     if (response.success) {
+    //       const updatedUser = response.user;
+    //       setUser(updatedUser);
+    //       setShowTransferModal(false);
+    //     } else {
+    //       setTransferError(response.error);
+    //     }
+
+    //     setTransferModalLoading(false);
+    //   })
+    //   .catch(e => {
+    //     setTransferError('An unknown error occurred.');
+    //     setTransferModalLoading(false);
+    //   });
+    ///////////////////-------------------END------------------////////////////////////////////
+
+
+
+     ///////////////////-----------NON CSRF PREVENTION---------------////////////////////////////////
+     fetch('/transfer', {
       method: 'post',
       body: data,
     })
@@ -53,6 +82,7 @@ export default function Home({ user, setUser }) {
         setTransferError('An unknown error occurred.');
         setTransferModalLoading(false);
       });
+      ///////////////////-------------------END------------------////////////////////////////////
   };
 
   return (

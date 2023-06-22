@@ -11,6 +11,27 @@ export default function Login({ user }) {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const loginUser = async () => {
+    try {
+      console.log(123);
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      });
+
+      // if (response.ok) {
+      //   const token = getCookie('token');
+      //   localStorage.setItem('token', token);
+      // } 
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     if (user) {
       navigate('/');
@@ -25,7 +46,7 @@ export default function Login({ user }) {
           Make your username unique, but use any password you want (it's not actually checked or
           stored).
         </Alert>
-        <Form method="POST" action="/login">
+        <Form onSubmit={loginUser}>
           <Form.Group>
             <Form.Label>Username:</Form.Label>
             <Form.Control

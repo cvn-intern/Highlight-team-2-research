@@ -15,6 +15,28 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  ///////////////////-----------CSRF PREVENTION---------------////////////////////////////////
+  // const refreshUser = useCallback(() => {
+  //   return fetch('/user')
+  //     .then(response => response.json())
+  //     .then(user => {
+  //       setLoading(false);
+  //       if(user){
+  //         setUser(user.user);
+  //         localStorage.setItem('token', user.token);
+  //       }
+        
+  //       if (!user) {
+  //         navigate('/login');
+  //       }
+  //     });
+  // }, [navigate, setUser, setLoading]);
+  ///////////////////-------------------END------------------////////////////////////////////
+
+  
+
+
+   ///////////////////-----------NON CSRF PREVENTION---------------////////////////////////////////
   const refreshUser = useCallback(() => {
     return fetch('/user')
       .then(response => response.json())
@@ -27,6 +49,8 @@ function App() {
         }
       });
   }, [navigate, setUser, setLoading]);
+  ///////////////////-------------------END------------------////////////////////////////////
+
 
   // useEffect(() => {
   //   const intervalID = setInterval(refreshUser, 5000);
