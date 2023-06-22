@@ -1,0 +1,30 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: rgb(41,47,51);
+  }
+  
+  * {
+     font-family: 'Helvetica';
+     font-weight: 300;
+  } 
+  
+  #btn-forgery{
+      margin: 30px;
+      font-size: 18px;
+      height: 65px;
+      width: 500px;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 2px 2px rgb(0, 162, 255);
+      background: rgb(0, 102, 255);
+      cursor: pointer;
+  }
+  #btn-forgery:hover{
+      background: rgb(47, 0, 255);
+  }
+  
+/* Confettiful */
