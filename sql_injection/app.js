@@ -41,13 +41,11 @@ const main = async () => {
     var loginValidate = [
         // check('username', 'Username Must Be an Email Address').isEmail().trim().escape().normalizeEmail(),
         // check('username').trim().escape(),
-        check('password').isLength({ min: 8 }).withMessage('Password Must Be at Least 8 Characters').trim().escape()
+        // check('password').isLength({ min: 8 }).withMessage('Password Must Be at Least 8 Characters').trim().escape()
     ];
 
     // a valid username is admin
     // a valid password is admin123 
-    // a invalid password is unknown' or '1'='1
-    // test username is admin'; DROP TABLE user; --
     app.post('/login', loginValidate, function (req, res) {
         const username = req.body.username; 
         const password = req.body.password;         
@@ -82,7 +80,7 @@ const main = async () => {
 
         console.log("username: " + username);
         console.log("password: " + password);
-        // console.log('query: ' + queryPrepare);
+        console.log('query: ' + queryPrepare);
 
         // // orm
         // User.findOne({
