@@ -80,7 +80,7 @@ const main = async () => {
 
         console.log("username: " + username);
         console.log("password: " + password);
-        console.log('query: ' + queryPrepare);
+        // console.log('query: ' + queryPrepare);
 
         // // orm
         // User.findOne({
