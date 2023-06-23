@@ -18,25 +18,25 @@ const main = async () => {
       db.run("INSERT INTO user VALUES ('admin', 'admin123', 'App Administrator')");
     });
 
-    // orm config
-    const sequelize = new Sequelize('sqlite::memory:', {
-        define: {
-            freezeTableName: true
-        }
-    });
-    const User = sequelize.define('user', {
-        username: DataTypes.TEXT,
-        password: DataTypes.TEXT,
-        name: DataTypes.TEXT,
-    });
+    // // orm config
+    // const sequelize = new Sequelize('sqlite::memory:', {
+    //     define: {
+    //         freezeTableName: true
+    //     }
+    // });
+    // const User = sequelize.define('user', {
+    //     username: DataTypes.TEXT,
+    //     password: DataTypes.TEXT,
+    //     name: DataTypes.TEXT,
+    // });
 
-    await User.sync()
+    // await User.sync()
 
-    await User.create({
-        username: 'admin',
-        password: 'admin123',
-        name: 'App Administrator',
-    })
+    // await User.create({
+    //     username: 'admin',
+    //     password: 'admin123',
+    //     name: 'App Administrator',
+    // })
 
     var loginValidate = [
         // check('username', 'Username Must Be an Email Address').isEmail().trim().escape().normalizeEmail(),
@@ -55,21 +55,21 @@ const main = async () => {
         const validateErr = validationResult(req)
         if(!validateErr.isEmpty()) return res.send(validateErr)
 
-        /* concat string */
-        // const queryPrepare = "SELECT name FROM user where username = '" + username + "' and password = '" + password + "'";
+        // concat string
+        const queryPrepare = "SELECT name FROM user where username = '" + username + "' and password = '" + password + "'";
         
-        // db.get(queryPrepare , function(err, value) {
-        //     console.log({value})
+        db.get(queryPrepare , function(err, value) {
+            console.log({value})
 
-        //     if(err) {
-        //         console.log('ERROR', err);
-        //         res.send({msg: "Error"})
-        //     } else if (!value) {
-        //         res.send({msg: "Invalid credentials"})
-        //     } else {
-        //         res.send({value});
-        //     }
-        // });
+            if(err) {
+                console.log('ERROR', err);
+                res.send({msg: "Error"})
+            } else if (!value) {
+                res.send({msg: "Invalid credentials"})
+            } else {
+                res.send({value});
+            }
+        });
 
         /* parameters */
         // const queryPrepare = db.prepare("SELECT name FROM user where username = (?) and password = (?)");
@@ -84,15 +84,15 @@ const main = async () => {
         console.log("password: " + password);
         // console.log('query: ' + queryPrepare);
 
-        /* orm */
-        User.findOne({
-            where: {
-                username,
-                password
-            }, attributes: ['name']
-        }).then(value => {
-            if(!value) return  res.send({ msg: "Invalid credentials" })
-            res.send({ value })}).catch(err => res.send({ msg: "Invalid credentials" }))
+        // // orm
+        // User.findOne({
+        //     where: {
+        //         username,
+        //         password
+        //     }, attributes: ['name']
+        // }).then(value => {
+        //     if(!value) return  res.send({ msg: "Invalid credentials" })
+        //     res.send({ value })}).catch(err => res.send({ msg: "Invalid credentials" }))
 
         
     });
